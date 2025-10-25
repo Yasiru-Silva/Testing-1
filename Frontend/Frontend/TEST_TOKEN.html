@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Token Test</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #f5f5f5; }
+        .test { background: white; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .success { border-left: 4px solid green; }
+        .error { border-left: 4px solid red; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 5px; }
+        button:hover { background: #0056b3; }
+        pre { background: #f8f9fa; padding: 10px; overflow-x: auto; }
+        input { padding: 8px; width: 300px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1> JWT Token Tester</h1>
+    
+    <div>
+        <h3>Step 1: Enter Token</h3>
+        <input type="text" id="tokenInput" placeholder="Paste your token here or it will auto-load from localStorage">
+        <button onclick="loadToken()">Load from LocalStorage</button>
+    </div>
+
+    <div>
+        <h3>Step 2: Test Endpoints</h3>
+        <button onclick="testApplications()">Test GET /api/applications</button>
+        <button onclick="testStudentData()">Test GET /api/students</button>
+        <button onclick="testPaymentList()">Test GET /api/payments</button>
+        <button onclick="testPaymentUpload()">Test POST /api/payments/upload</button>
+    </div>
+
+    <div id="results"></div>
+
+    <script>
+        const API_BASE = 'http://localhost:8082/api';
+        
+        function loadToken() {
+            const token = localStorage.getItem('token');
+            if (token) {
+                document.getElementById('tokenInput').value = token;
+                addResult('Token loaded from localStorage', 'success');
+                console.log('Token:', token);
+            } else {
+                addResult('No token found in localStorage', 'error');
+            }
+        }
+
+        function getToken() {
+            let token = document.getElementById('tokenInput').value;
+            if (!token) {
+                token = localStorage.getItem('token');
+                if (token) {
+                    document.getElementById('tokenInput').value = token;
+                }
+            }
+            return token;
+        }
+
+        function addResult(message, type) {
+            const div = document.createElement('div');
+            div.className = 'test ' + type;
+            div.innerHTML = '<strong>' + new Date().toLocaleTimeString() + ':</strong> ' + message;
+            document.getElementById('results').insertBefore(div, document.getElementById('results').firstChild);
+        }
+
+        async function testApplications() {
+            const token = getToken();
+            if (!token) {
+                addResult('Please enter a token first', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(API_BASE + '/applications', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    addResult(' Applications endpoint SUCCESS - Got ' + data.length + ' applications', 'success');
+                    console.log('Applications:', data);
+                } else {
+                    const error = await response.text();
+                    addResult(' Applications endpoint FAILED (' + response.status + '): ' + error, 'error');
+                }
+            } catch (err) {
+                addResult(' Request failed: ' + err.message, 'error');
+            }
+        }
+
+        async function testStudentData() {
+            const token = getToken();
+            if (!token) {
+                addResult('Please enter a token first', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(API_BASE + '/students', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    addResult(' Students endpoint SUCCESS - Got ' + data.length + ' students', 'success');
+                    console.log('Students:', data);
+                } else {
+                    const error = await response.text();
+                    addResult(' Students endpoint FAILED (' + response.status + '): ' + error, 'error');
+                }
+            } catch (err) {
+                addResult(' Request failed: ' + err.message, 'error');
+            }
+        }
+
+        async function testPaymentList() {
+            const token = getToken();
+            if (!token) {
+                addResult('Please enter a token first', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(API_BASE + '/payments', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    addResult(' Payments GET endpoint SUCCESS - Got ' + data.length + ' payments', 'success');
+                    console.log('Payments:', data);
+                } else {
+                    const error = await response.text();
+                    addResult(' Payments GET endpoint FAILED (' + response.status + '): ' + error, 'error');
+                }
+            } catch (err) {
+                addResult(' Request failed: ' + err.message, 'error');
+            }
+        }
+
+        async function testPaymentUpload() {
+            const token = getToken();
+            if (!token) {
+                addResult('Please enter a token first', 'error');
+                return;
+            }
+
+            addResult(' Starting payment upload test...', 'success');
+
+            try {
+                // Create FormData
+                const formData = new FormData();
+                
+                // Add payment JSON
+                const paymentData = {
+                    amount: 100.50,
+                    paymentMethod: "Bank Transfer",
+                    transactionReference: "TEST" + Date.now(),
+                    notes: "Test payment from HTML tester",
+                    application: { applicationId: 1 } // Change this to a valid ID
+                };
+                formData.append('payment', JSON.stringify(paymentData));
+                
+                // Add a test file
+                const blob = new Blob(['test file content'], { type: 'image/jpeg' });
+                formData.append('slipFile', blob, 'test.jpg');
+
+                console.log('Sending FormData with Authorization: Bearer ' + token.substring(0, 20) + '...');
+
+                const response = await fetch(API_BASE + '/payments/upload', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                        // DO NOT set Content-Type - let browser set it with boundary
+                    },
+                    body: formData
+                });
+
+                console.log('Response status:', response.status);
+                console.log('Response headers:', [...response.headers.entries()]);
+
+                if (response.ok) {
+                    const data = await response.json();
+                    addResult(' Payment upload SUCCESS! Payment ID: ' + data.paymentId, 'success');
+                    console.log('Payment created:', data);
+                } else {
+                    const error = await response.text();
+                    addResult(' Payment upload FAILED (' + response.status + '): ' + error, 'error');
+                    console.error('Error response:', error);
+                }
+            } catch (err) {
+                addResult(' Request failed: ' + err.message, 'error');
+                console.error('Exception:', err);
+            }
+        }
+
+        // Auto-load token on page load
+        window.onload = loadToken;
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+

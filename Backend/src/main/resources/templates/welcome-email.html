@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to SIT International</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #2563eb;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #6b7280;
+            font-size: 16px;
+        }
+        .content {
+            margin-bottom: 30px;
+        }
+        .highlight {
+            background-color: #eff6ff;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #2563eb;
+            margin: 20px 0;
+        }
+        .button {
+            display: inline-block;
+            background-color: #2563eb;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        .info-box {
+            background-color: #f9fafb;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">SIT International</div>
+            <div class="subtitle">Study Abroad Portal</div>
+        </div>
+        
+        <div class="content">
+            <h2>Welcome to SIT International, <span th:text="${studentName}">Student Name</span>!</h2>
+            
+            <p>Thank you for registering with SIT International Study Abroad Portal. We're excited to help you embark on your international education journey!</p>
+            
+            <div class="highlight">
+                <h3>🎉 Registration Successful!</h3>
+                <p>Your account has been created successfully. You can now access all the features of our study abroad portal.</p>
+            </div>
+            
+            <div class="info-box">
+                <strong>Registration Details:</strong><br>
+                <strong>Email:</strong> <span th:text="${email}">student@example.com</span><br>
+                <strong>Registration Date:</strong> <span th:text="${registrationDate}">January 1, 2024</span>
+            </div>
+            
+            <h3>What's Next?</h3>
+            <ul>
+                <li><strong>Browse Programs:</strong> Explore our wide range of study abroad programs</li>
+                <li><strong>Find Universities:</strong> Discover partner universities worldwide</li>
+                <li><strong>Submit Applications:</strong> Apply to your preferred programs</li>
+                <li><strong>Track Progress:</strong> Monitor your application status in real-time</li>
+            </ul>
+            
+            <div style="text-align: center;">
+                <a href="http://localhost:3000/programs" class="button">Explore Programs</a>
+            </div>
+            
+            <h3>Need Help?</h3>
+            <p>If you have any questions or need assistance, please don't hesitate to contact our support team:</p>
+            <ul>
+                <li><strong>Email:</strong> support@sitinternational.com</li>
+                <li><strong>Phone:</strong> +94 11 234 5678</li>
+                <li><strong>Office Hours:</strong> Monday - Friday, 9:00 AM - 5:00 PM</li>
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <p>This email was sent to <span th:text="${email}">student@example.com</span> because you registered for an account on SIT International Study Abroad Portal.</p>
+            <p>© 2024 SIT International. All rights reserved.</p>
+            <p>SIT International (Pvt) Ltd | Colombo, Sri Lanka</p>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Status Update - SIT International</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #dc2626;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #dc2626;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #6b7280;
+            font-size: 16px;
+        }
+        .content {
+            margin-bottom: 30px;
+        }
+        .status-box {
+            background-color: #fef2f2;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #dc2626;
+            margin: 20px 0;
+        }
+        .status-box.approved {
+            background-color: #f0fdf4;
+            border-left-color: #16a34a;
+        }
+        .status-box.rejected {
+            background-color: #fef2f2;
+            border-left-color: #dc2626;
+        }
+        .status-box.under-review {
+            background-color: #eff6ff;
+            border-left-color: #2563eb;
+        }
+        .application-details {
+            background-color: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .status-approved {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        .status-rejected {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        .status-under-review {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        .status-pending {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        .button {
+            display: inline-block;
+            background-color: #dc2626;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .button.approved {
+            background-color: #16a34a;
+        }
+        .button.under-review {
+            background-color: #2563eb;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        .next-steps {
+            background-color: #f0f9ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">SIT International</div>
+            <div class="subtitle">Study Abroad Portal</div>
+        </div>
+        
+        <div class="content">
+            <h2>Application Status Update</h2>
+            
+            <p>Dear <span th:text="${studentName}">Student Name</span>,</p>
+            
+            <p>We have an important update regarding your application to SIT International Study Abroad Portal.</p>
+            
+            <div class="status-box" th:classappend="${newStatus == 'APPROVED' ? 'approved' : (newStatus == 'REJECTED' ? 'rejected' : 'under-review')}">
+                <h3 th:if="${newStatus == 'APPROVED'}">🎉 Congratulations! Application Approved</h3>
+                <h3 th:if="${newStatus == 'REJECTED'}">📋 Application Update</h3>
+                <h3 th:if="${newStatus == 'UNDER_REVIEW'}">🔍 Application Under Review</h3>
+                
+                <p th:if="${newStatus == 'APPROVED'}">Great news! Your application has been approved. You can now proceed with the next steps in your study abroad journey.</p>
+                <p th:if="${newStatus == 'REJECTED'}">We regret to inform you that your application was not successful this time. Please see the details below for more information.</p>
+                <p th:if="${newStatus == 'UNDER_REVIEW'}">Your application is currently being reviewed by our team. We will notify you once the review is complete.</p>
+            </div>
+            
+            <div class="application-details">
+                <h3>Application Details</h3>
+                <p><strong>Application ID:</strong> <span th:text="${applicationId}">APP-12345</span></p>
+                <p><strong>Program:</strong> <span th:text="${programName}">Bachelor of Computer Science</span></p>
+                <p><strong>University:</strong> <span th:text="${universityName}">University of Technology</span></p>
+                <p><strong>Previous Status:</strong> <span th:text="${oldStatus}">PENDING</span></p>
+                <p><strong>New Status:</strong> 
+                    <span class="status-badge" 
+                          th:classappend="${newStatus == 'APPROVED' ? 'status-approved' : (newStatus == 'REJECTED' ? 'status-rejected' : (newStatus == 'UNDER_REVIEW' ? 'status-under-review' : 'status-pending'))}"
+                          th:text="${newStatus}">UNDER_REVIEW</span>
+                </p>
+                <p><strong>Update Date:</strong> <span th:text="${updateDate}">January 20, 2024</span></p>
+            </div>
+            
+            <div class="next-steps" th:if="${newStatus == 'APPROVED'}">
+                <h3>🎯 Next Steps for Approved Applications</h3>
+                <ul>
+                    <li>Complete the enrollment process with the university</li>
+                    <li>Submit any required additional documents</li>
+                    <li>Arrange for visa application (if applicable)</li>
+                    <li>Make necessary payments for program fees</li>
+                    <li>Prepare for your study abroad journey</li>
+                </ul>
+            </div>
+            
+            <div class="next-steps" th:if="${newStatus == 'REJECTED'}">
+                <h3>📝 What You Can Do Next</h3>
+                <ul>
+                    <li>Review the application requirements and improve your application</li>
+                    <li>Consider applying to other programs that match your profile</li>
+                    <li>Contact our advisors for guidance on strengthening your application</li>
+                    <li>Reapply in the next application cycle if eligible</li>
+                </ul>
+            </div>
+            
+            <div class="next-steps" th:if="${newStatus == 'UNDER_REVIEW'}">
+                <h3>⏳ While We Review Your Application</h3>
+                <ul>
+                    <li>Ensure all required documents are submitted</li>
+                    <li>Check your email regularly for any additional requests</li>
+                    <li>Prepare for potential interviews or additional assessments</li>
+                    <li>Keep your contact information up to date</li>
+                </ul>
+            </div>
+            
+            <div style="text-align: center;">
+                <a href="http://localhost:3000/dashboard" 
+                   class="button" 
+                   th:classappend="${newStatus == 'APPROVED' ? 'approved' : (newStatus == 'UNDER_REVIEW' ? 'under-review' : '')}">
+                    View Application Details
+                </a>
+            </div>
+            
+            <h3>Need Support?</h3>
+            <p>If you have any questions about this status update or need assistance, please contact us:</p>
+            <ul>
+                <li><strong>Email:</strong> applications@sitinternational.com</li>
+                <li><strong>Phone:</strong> +94 11 234 5678</li>
+                <li><strong>Reference:</strong> Application ID <span th:text="${applicationId}">APP-12345</span></li>
+            </ul>
+            
+            <div style="background-color: #fef3c7; padding: 15px; border-radius: 6px; margin: 20px 0;">
+                <h4>📋 Important Note</h4>
+                <p>Please keep this email for your records. You may need to reference this status update in future communications with our team.</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>This email was sent regarding your application to SIT International Study Abroad Portal.</p>
+            <p>© 2024 SIT International. All rights reserved.</p>
+            <p>SIT International (Pvt) Ltd | Colombo, Sri Lanka</p>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

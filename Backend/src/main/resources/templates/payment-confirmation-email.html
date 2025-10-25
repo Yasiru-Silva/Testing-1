@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Confirmation - SIT International</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #7c3aed;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #7c3aed;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #6b7280;
+            font-size: 16px;
+        }
+        .content {
+            margin-bottom: 30px;
+        }
+        .success-box {
+            background-color: #f3e8ff;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #7c3aed;
+            margin: 20px 0;
+        }
+        .payment-details {
+            background-color: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .amount {
+            font-size: 24px;
+            font-weight: bold;
+            color: #7c3aed;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .status-completed {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        .status-pending {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        .button {
+            display: inline-block;
+            background-color: #7c3aed;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        .receipt-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .receipt-table th,
+        .receipt-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .receipt-table th {
+            background-color: #f9fafb;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">SIT International</div>
+            <div class="subtitle">Study Abroad Portal</div>
+        </div>
+        
+        <div class="content">
+            <h2>Payment Confirmation</h2>
+            
+            <p>Dear <span th:text="${studentName}">Student Name</span>,</p>
+            
+            <p>Thank you for your payment to SIT International Study Abroad Portal. We have successfully processed your payment.</p>
+            
+            <div class="success-box">
+                <h3>💳 Payment Received</h3>
+                <p>Your payment has been processed successfully. Please keep this confirmation for your records.</p>
+            </div>
+            
+            <div class="payment-details">
+                <h3>Payment Details</h3>
+                <table class="receipt-table">
+                    <tr>
+                        <th>Payment ID</th>
+                        <td><span th:text="${paymentId}">PAY-12345</span></td>
+                    </tr>
+                    <tr>
+                        <th>Amount</th>
+                        <td class="amount">$<span th:text="${amount}">500.00</span></td>
+                    </tr>
+                    <tr>
+                        <th>Payment Method</th>
+                        <td><span th:text="${paymentMethod}">Credit Card</span></td>
+                    </tr>
+                    <tr>
+                        <th>Payment Date</th>
+                        <td><span th:text="${paymentDate}">January 15, 2024</span></td>
+                    </tr>
+                    <tr>
+                        <th>Status</th>
+                        <td>
+                            <span class="status-badge status-completed" th:text="${status}">COMPLETED</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            
+            <h3>What's Next?</h3>
+            <ul>
+                <li>Your payment has been recorded in our system</li>
+                <li>You will receive a receipt via email shortly</li>
+                <li>If this payment is for an application fee, your application will now proceed to review</li>
+                <li>For program fees, your enrollment will be confirmed upon payment verification</li>
+            </ul>
+            
+            <div style="text-align: center;">
+                <a href="http://localhost:3000/dashboard" class="button">View Payment History</a>
+            </div>
+            
+            <h3>Payment Security</h3>
+            <p>Your payment information is secure and encrypted. We use industry-standard security measures to protect your financial data.</p>
+            
+            <h3>Need Support?</h3>
+            <p>If you have any questions about this payment or need assistance, please contact us:</p>
+            <ul>
+                <li><strong>Email:</strong> payments@sitinternational.com</li>
+                <li><strong>Phone:</strong> +94 11 234 5678</li>
+                <li><strong>Reference:</strong> Payment ID <span th:text="${paymentId}">PAY-12345</span></li>
+            </ul>
+            
+            <div style="background-color: #fef3c7; padding: 15px; border-radius: 6px; margin: 20px 0;">
+                <h4>📋 Important Reminder</h4>
+                <p>Please keep this payment confirmation email for your records. You may need it for tax purposes or future reference.</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>This email was sent regarding your payment to SIT International Study Abroad Portal.</p>
+            <p>© 2024 SIT International. All rights reserved.</p>
+            <p>SIT International (Pvt) Ltd | Colombo, Sri Lanka</p>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

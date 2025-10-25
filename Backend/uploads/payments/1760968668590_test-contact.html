@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Contact Messages</title>
+</head>
+<body>
+    <h1>Test Contact Messages Endpoint</h1>
+    <button onclick="testPost()">Test POST</button>
+    <div id="result"></div>
+
+    <script>
+        async function testPost() {
+            try {
+                const response = await fetch('http://localhost:8082/api/contact-messages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: 'Test User',
+                        email: 'test@example.com',
+                        messageContent: 'Test message',
+                        messageType: 'GENERAL_INQUIRY'
+                    })
+                });
+                
+                const data = await response.json();
+                document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                console.log('Response:', data);
+            } catch (error) {
+                document.getElementById('result').innerHTML = '<pre>Error: ' + error.message + '</pre>';
+                console.error('Error:', error);
+            }
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
